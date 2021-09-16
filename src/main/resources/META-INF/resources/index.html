@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Environment Variables</title>
+        <style>
+            .banner {
+                font-family: Verdana;
+                font-size: 2.7rem;
+                margin: 0;
+                margin-bottom: 2rem;
+                padding: 2rem 1rem;
+                background-color: #0f124a;
+                color: white;
+            }
+
+            section {
+                font-family: Verdana;
+                margin-left: 1rem;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="banner lead">
+            Environment Variables
+        </div>
+        
+        <div class="container"/>
+        
+        <script>
+
+            renderVariables()
+
+                    .catch(error => {
+                        console.error(error);
+                        document.querySelector('.container').innerHTML = '<section><p><strong>Oops! An error occured when calling the API. Error message: </strong></p></section><section><p>' + error + '</p></section>';
+                    });
+
+            async function getVariables() {
+                const response = await fetch('./variables/');
+                return await response.json();
+            }
+
+            async function renderVariables() {
+                let variables = await getVariables();
+
+                let html = '';
+
+                variables.forEach(variable => {
+                    html += `<section><p><strong>${variable.name}</strong>: ${variable.value}</p></section>`;
+                });
+                
+                html += '<section><p><a href="./variables/"/>api endpoint</p></section>';
+
+                let container = document.querySelector('.container');
+                container.innerHTML = html;
+            }
+
+        </script>
+
+    </body>
+
+</html>
